@@ -10,6 +10,7 @@ import UserLayout from "./components/layouts/Userlayout";
 import AdminUser from "./pages/admin/User";
 import AdminMenu from "./pages/admin/Menu";
 import AdminLayout from "./components/layouts/Adminlayout";
+// import ProtectedRoute from "./components/auth/protectedRoutes";
 
 function App() {
   return (

@@ -1,6 +1,14 @@
 import { Button } from "antd";
 
 export default function HeaderMenu() {
+  const token = localStorage.getItem("token");
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login"; // Redirect to the login page
+  };
+
   return (
     <div className="container mx-auto flex justify-between items-center">
       <div className="flex items-center">
@@ -11,7 +19,7 @@ export default function HeaderMenu() {
           Crave Cafe
         </h1>
         <nav>
-          <ul className="flex md:space-x-4 lg:space-x-6 ">
+          <ul className="flex md:space-x-4 lg:space-x-6">
             <li>
               <a
                 href="/"
@@ -48,18 +56,31 @@ export default function HeaderMenu() {
         </nav>
       </div>
       <div className="flex items-center">
-        <Button
-          className="bg-secondary text-white px-4 py-2 rounded-2xl"
-          onClick={() => (window.location.href = "/login")}
-        >
-          Login
-        </Button>
-        <Button
-          onClick={() => (window.location.href = "/signup")}
-          className="bg-primary hover:bg-btnPrimaryHover text-secondary px-4 py-2 rounded-2xl ml-4"
-        >
-          Sign up
-        </Button>
+        {token ? (
+          // If token exists, show Logout button
+          <Button
+            className="bg-secondary text-white px-4 py-2 rounded-2xl"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        ) : (
+          // If no token, show Login and Signup buttons
+          <>
+            <Button
+              className="bg-secondary text-white px-4 py-2 rounded-2xl"
+              onClick={() => (window.location.href = "/login")}
+            >
+              Login
+            </Button>
+            <Button
+              onClick={() => (window.location.href = "/signup")}
+              className="bg-primary hover:bg-btnPrimaryHover text-secondary px-4 py-2 rounded-2xl ml-4"
+            >
+              Sign up
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

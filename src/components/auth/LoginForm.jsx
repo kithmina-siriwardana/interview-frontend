@@ -1,39 +1,100 @@
+import { Form, Input, Button } from "antd";
 import { Link } from "react-router-dom";
+import { message } from "antd";
+import axios from "axios";
 
 const LoginForm = () => {
+  const onFinish = async (values) => {
+    try {
+      console.log("Received values:", values);
+      console.log("Backend URL:", import.meta.env.VITE_BACKEND_URL);
+
+      // Send login request to the backend
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
+        values
+      );
+
+      // Handle successful login
+      const { token } = response.data;
+      console.log("Login successful. Token:", token);
+
+      // Save the token and role in localStorage or sessionStorage
+      localStorage.setItem("token", token);
+
+      // Show success message
+      message.success("Login successful!");
+
+      // Redirect to the dashboard
+      if (token) {
+        window.location.href = "/admin";
+      }
+    } catch (error) {
+      // Handle login error
+      console.error("Login failed:", error);
+      message.error("Login failed. Please check your credentials.");
+    }
+  };
+
   return (
-    <div className="bg-white p-10 rounded-xl w-full h-full max-w-md">
+    <div className="bg-white p-10 rounded-xl w-full max-w-md">
       <h2 className="text-center text-2xl font-semibold text-gray-800 mb-6">
         Login
       </h2>
-      <form>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email
-          </label>
-          <input
-            type="email"
+      <Form onFinish={onFinish} layout="vertical">
+        {/* Email Field */}
+        <Form.Item
+          label="Email"
+          name="email"
+          required={false}
+          rules={[
+            {
+              required: true,
+              message: "Please enter your email!",
+            },
+            {
+              type: "email",
+              message: "Please enter a valid email!",
+            },
+          ]}
+        >
+          <Input
             placeholder="Enter your email"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
           />
-        </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Password
-          </label>
-          <input
-            type="password"
+        </Form.Item>
+
+        {/* Password Field */}
+        <Form.Item
+          label="Password"
+          name="password"
+          required={false}
+          rules={[
+            {
+              required: true,
+              message: "Please enter your password!",
+            },
+          ]}
+        >
+          <Input.Password
             placeholder="Enter your password"
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
           />
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-secondary text-white py-2 px-4 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
-        >
-          Login
-        </button>
-      </form>
+        </Form.Item>
+
+        {/* Login Button */}
+        <Form.Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="w-full bg-secondary text-white py-5 px-4 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
+          >
+            Login
+          </Button>
+        </Form.Item>
+      </Form>
+
+      {/* Signup Link */}
       <p className="text-center text-sm text-gray-600 mt-4">
         Don&apos;t have an account?{" "}
         <Link
