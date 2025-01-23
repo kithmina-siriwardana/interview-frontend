@@ -1,7 +1,8 @@
 import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
-const { Header, Content, Footer } = Layout;
 import HeaderMenu from "../common/Header";
+
+const { Header, Content, Footer } = Layout;
 
 const UserLayout = () => {
   return (
@@ -13,7 +14,7 @@ const UserLayout = () => {
         <Outlet />
       </Content>
       <Footer className="text-center bg-secondary text-primary">
-        Crave Cafe ©{new Date().getFullYear()} Alright Reserved
+        Crave Cafe © {new Date().getFullYear()} Alright Reserved
       </Footer>
     </Layout>
   );

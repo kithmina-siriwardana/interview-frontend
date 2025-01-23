@@ -4,7 +4,12 @@ export default function HeaderMenu() {
   return (
     <div className="container mx-auto flex justify-between items-center">
       <div className="flex items-center">
-        <h1 className="text-2xl font-bold md:mr-10 lg:mr-20 ">Crave Cafe</h1>
+        <h1
+          className="text-2xl font-bold md:mr-10 lg:mr-20 cursor-pointer"
+          onClick={() => (window.location.href = "/")}
+        >
+          Crave Cafe
+        </h1>
         <nav>
           <ul className="flex md:space-x-4 lg:space-x-6 ">
             <li>
@@ -17,7 +22,7 @@ export default function HeaderMenu() {
             </li>
             <li>
               <a
-                href="#"
+                href="/menu"
                 className="hover:bg-btnPrimaryHover px-3 py-2 rounded-2xl"
               >
                 Menu
@@ -33,7 +38,7 @@ export default function HeaderMenu() {
             </li>
             <li>
               <a
-                href="#"
+                href="/contact"
                 className="hover:bg-btnPrimaryHover px-3 py-2 rounded-2xl"
               >
                 Contact
