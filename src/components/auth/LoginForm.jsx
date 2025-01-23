@@ -29,7 +29,7 @@ const LoginForm = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-black text-white py-2 px-4 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
+          className="w-full bg-secondary text-white py-2 px-4 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
         >
           Login
         </button>
@@ -38,7 +38,7 @@ const LoginForm = () => {
         Don&apos;t have an account?{" "}
         <Link
           to="/signup"
-          className="text-black underline font-medium hover:text-gray-800"
+          className="text-secondary underline font-medium hover:text-gray-800"
         >
           Sign Up
         </Link>

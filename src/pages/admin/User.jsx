@@ -1,38 +1,28 @@
 import { Table, Space } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-const Menu = () => {
+const User = () => {
   // Sample data for the table
   const dataSource = [
     {
       key: "1",
-      name: "Margherita Pizza",
-      description: "Classic pizza with tomato sauce, mozzarella, and basil.",
-      category: "Pizza",
-      price: "$10.99",
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "Admin",
     },
     {
       key: "2",
-      name: "Spaghetti Carbonara",
-      description: "Pasta with eggs, cheese, pancetta, and black pepper.",
-      category: "Pasta",
-      price: "$12.99",
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      role: "Editor",
     },
     {
       key: "3",
-      name: "Caesar Salad",
-      description: "Romaine lettuce, croutons, parmesan, and Caesar dressing.",
-      category: "Salad",
-      price: "$8.99",
+      name: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      role: "Viewer",
     },
   ];
-
-  // Function to truncate description
-  const truncateDescription = (text, maxLength = 50) => {
-    return text.length > maxLength
-      ? `${text.substring(0, maxLength)}...`
-      : text;
-  };
 
   // Columns for the table
   const columns = [
@@ -42,26 +32,18 @@ const Menu = () => {
       key: "name",
       render: (text) => (
         <span className="text-adminTwo font-medium">{text}</span>
-      ),
+      ), // Use adminOne color for text
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text) => (
-        <span className="text-adminTwo">{truncateDescription(text)}</span>
-      ),
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       render: (text) => <span className="text-adminTwo">{text}</span>,
     },
     {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
       render: (text) => <span className="text-adminTwo">{text}</span>,
     },
     {
@@ -84,21 +66,22 @@ const Menu = () => {
 
   // Handle Edit Action
   const handleEdit = (key) => {
-    console.log("Edit menu item with key:", key);
+    console.log("Edit user with key:", key);
     // Add your edit logic here
   };
 
   // Handle Delete Action
   const handleDelete = (key) => {
-    console.log("Delete menu item with key:", key);
+    console.log("Delete user with key:", key);
     // Add your delete logic here
   };
 
   return (
     <div>
+      {" "}
       <h1 className="text-2xl font-semibold text-adminOne mb-4">
-        Menu Management
-      </h1>
+        User Management
+      </h1>{" "}
       <Table
         dataSource={dataSource}
         columns={columns}
@@ -110,4 +93,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default User;
