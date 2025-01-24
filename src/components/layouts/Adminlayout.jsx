@@ -1,15 +1,18 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   DashboardOutlined,
+  LogoutOutlined,
   // UserOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import { useAuth } from "../auth/AuthContext";
 
 const { Item } = Menu;
 const { Sider, Content, Footer } = Layout;
 
 const AdminLayout = () => {
+  const { logout } = useAuth();
   const location = useLocation();
 
   const selectedKey = location.pathname.startsWith("/admin/users")
@@ -68,6 +71,17 @@ const AdminLayout = () => {
             </Link>
           </Item>
         </Menu>
+
+        {/* Logout Button */}
+        <div className="absolute bottom-0 left-0 w-full p-4 flex items-center justify-center mb-20">
+          <Button
+            onClick={logout}
+            className="flex items-center justify-center space-x-2 py-2 px-6 bg-red-700 border-red-700 text-white rounded-lg hover:bg-red-700 transition duration-300"
+          >
+            <LogoutOutlined />
+            <span>Logout</span>
+          </Button>
+        </div>
       </Sider>
 
       {/* Main Layout */}

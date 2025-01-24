@@ -1,13 +1,8 @@
 import { Button } from "antd";
+import { useAuth } from "../auth/AuthContext";
 
 export default function HeaderMenu() {
-  const token = localStorage.getItem("token");
-
-  // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/login"; // Redirect to the login page
-  };
+  const { logout, user } = useAuth();
 
   return (
     <div className="container mx-auto flex justify-between items-center">
@@ -56,11 +51,10 @@ export default function HeaderMenu() {
         </nav>
       </div>
       <div className="flex items-center">
-        {token ? (
-          // If token exists, show Logout button
+        {user ? (
           <Button
             className="bg-secondary text-white px-4 py-2 rounded-2xl"
-            onClick={handleLogout}
+            onClick={logout}
           >
             Logout
           </Button>
@@ -68,17 +62,17 @@ export default function HeaderMenu() {
           // If no token, show Login and Signup buttons
           <>
             <Button
-              className="bg-secondary text-white px-4 py-2 rounded-2xl"
+              className="bg-primary hover:bg-btnPrimaryHover text-secondary px-4 py-2 rounded-2xl"
               onClick={() => (window.location.href = "/login")}
             >
               Login
             </Button>
-            <Button
+            {/* <Button
               onClick={() => (window.location.href = "/signup")}
               className="bg-primary hover:bg-btnPrimaryHover text-secondary px-4 py-2 rounded-2xl ml-4"
             >
               Sign up
-            </Button>
+            </Button> */}
           </>
         )}
       </div>

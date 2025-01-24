@@ -2,8 +2,11 @@ import { Form, Input, Button } from "antd";
 import { Link } from "react-router-dom";
 import { message } from "antd";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const LoginForm = () => {
+  const { login } = useAuth();
+
   const onFinish = async (values) => {
     try {
       console.log("Received values:", values);
@@ -17,18 +20,24 @@ const LoginForm = () => {
 
       // Handle successful login
       const { token } = response.data;
+      const { role } = response.data;
       console.log("Login successful. Token:", token);
 
+      if (token) {
+        message.success("Login successful!");
+        login(token, role);
+      }
+
       // Save the token and role in localStorage or sessionStorage
-      localStorage.setItem("token", token);
+      // localStorage.setItem("token", token);
 
       // Show success message
-      message.success("Login successful!");
+      // message.success("Login successful!");
 
       // Redirect to the dashboard
-      if (token) {
-        window.location.href = "/admin";
-      }
+      // if (token) {
+      //   window.location.href = "/admin";
+      // }
     } catch (error) {
       // Handle login error
       console.error("Login failed:", error);
