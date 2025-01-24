@@ -148,7 +148,15 @@ const Menu = () => {
       {/* Menu Items Grid */}
       <Row gutter={[16, 16]}>
         {filteredMenuItems.map((item) => (
-          <Col key={item.id} xs={24} sm={12} md={12} lg={8} xl={6}>
+          <Col
+            key={item.id}
+            xs={24}
+            sm={12}
+            md={12}
+            lg={8}
+            xl={6}
+            className="mb-2"
+          >
             <MenuItemCard item={item} />
           </Col>
         ))}

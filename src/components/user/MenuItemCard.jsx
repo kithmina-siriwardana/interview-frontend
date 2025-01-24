@@ -8,7 +8,7 @@ const MenuItemCard = ({ item }) => {
   return (
     <Card
       hoverable
-      className="w-72 rounded-lg border border-secondary bg-slate-100 text-secondary"
+      className="w-72 rounded-lg border  bg-slate-100 text-secondary"
       cover={
         <img
           alt={name}
