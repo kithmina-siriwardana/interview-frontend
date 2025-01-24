@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react";
 import { Carousel, Button, Typography } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { sliderImages } from "../../constants/constants";
+import axios from "axios";
 
 const { Title, Paragraph } = Typography;
 
-// Sample images for the slider
-const sliderImages = [
-  "https://images.unsplash.com/photo-1557275357-072087771588?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Zm9vZHN8ZW58MHx8MHx8fDI%3D",
-  "https://images.unsplash.com/photo-1516865131505-4dabf2efc692?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Zm9vZHN8ZW58MHx8MHx8fDI%3D",
-  "https://images.unsplash.com/photo-1563297782-f4cba03a3fb9?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGZvb2RzfGVufDB8fDB8fHwy",
-  "https://images.unsplash.com/photo-1520347788611-1654e613e422?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjN8fGZvb2RzfGVufDB8fDB8fHwy",
-  "https://images.unsplash.com/photo-1617460182733-e555b2ce5ede?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjh8fGZvb2RzfGVufDB8fDB8fHwy",
-];
-
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [menuItems, setMenuItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Auto-slide functionality
   useEffect(() => {
@@ -22,6 +17,25 @@ const Home = () => {
       setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
     }, 5000); // Change slide every 5 seconds
     return () => clearInterval(interval);
+  }, []);
+
+  // Fetch latest menu items
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/menu/get/latest`
+        );
+        setMenuItems(response.data);
+        setLoading(false);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+    fetchMenuItems();
   }, []);
 
   // Handle manual slide change
@@ -36,7 +50,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className=" bg-gray-100">
       {/* Hero Section with Image Slider */}
       <div className="relative h-[600px] overflow-hidden">
         <Carousel
@@ -58,7 +72,7 @@ const Home = () => {
         </Carousel>
 
         {/* Overlay Content */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-40 text-white text-center">
+        <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50 text-white text-center">
           <Title
             level={1}
             className="text-6xl font-bold mb-4"
@@ -108,59 +122,47 @@ const Home = () => {
       </div>
 
       {/* Menu Highlights Section */}
-      <div className="py-8 px-8 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <Title level={2} className="text-4xl font-bold text-center">
-            Menu Highlights
-          </Title>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-            {/* Menu Item 1 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <img
-                src="https://via.placeholder.com/300x200?text=Coffee"
-                alt="Coffee"
-                className="w-full h-48 object-cover rounded-t-lg"
-              />
-              <Title level={4} className="text-xl font-semibold mt-4">
-                Specialty Coffee
+      {loading ? (
+        <>Loading...</>
+      ) : menuItems ? (
+        <>
+          <div className="py-8 px-8 bg-gray-100">
+            <div className="max-w-6xl mx-auto">
+              <Title level={2} className="text-4xl font-bold text-center">
+                Latest Menu Highlights
               </Title>
-              <Paragraph className="text-gray-600">
-                Handcrafted coffee made from the finest beans.
-              </Paragraph>
-            </div>
 
-            {/* Menu Item 2 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <img
-                src="https://via.placeholder.com/300x200?text=Pastries"
-                alt="Pastries"
-                className="w-full h-48 object-cover rounded-t-lg"
-              />
-              <Title level={4} className="text-xl font-semibold mt-4">
-                Fresh Pastries
-              </Title>
-              <Paragraph className="text-gray-600">
-                Delicious pastries baked fresh daily.
-              </Paragraph>
-            </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+                {menuItems.map((item) => (
+                  <div
+                    key={item._id}
+                    className="bg-white p-6 rounded-lg shadow-lg text-center"
+                  >
+                    {/* Image */}
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
 
-            {/* Menu Item 3 */}
-            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <img
-                src="https://via.placeholder.com/300x200?text=Sandwiches"
-                alt="Sandwiches"
-                className="w-full h-48 object-cover rounded-t-lg"
-              />
-              <Title level={4} className="text-xl font-semibold mt-4">
-                Gourmet Sandwiches
-              </Title>
-              <Paragraph className="text-gray-600">
-                Sandwiches made with premium ingredients.
-              </Paragraph>
+                    {/* Name */}
+                    <Title level={4} className="text-xl font-semibold mt-4">
+                      {item.name}
+                    </Title>
+
+                    {/* Description */}
+                    <Paragraph className="text-gray-600">
+                      {item.description}
+                    </Paragraph>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

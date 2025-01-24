@@ -2,12 +2,12 @@ import { Layout, Menu } from "antd";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   DashboardOutlined,
-  UserOutlined,
+  // UserOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 
 const { Item } = Menu;
-const { Header, Sider, Content, Footer } = Layout;
+const { Sider, Content, Footer } = Layout;
 
 const AdminLayout = () => {
   const location = useLocation();
@@ -26,11 +26,11 @@ const AdminLayout = () => {
         collapsedWidth="0"
         className="overflow-auto h-screen fixed left-0 bg-adminOne text-white"
       >
-        <div className="p-4 text-center font-semibold text-lg mt-1 ">
+        <div className="p-4 text-center font-semibold text-2xl mt-1 ">
           Admin Panel
         </div>
         <Menu
-          className="bg-adminOne"
+          className="bg-adminOne mt-5"
           mode="inline"
           selectedKeys={[selectedKey]}
         >
@@ -45,7 +45,7 @@ const AdminLayout = () => {
               </span>
             </Link>
           </Item>
-          <Item key="2" icon={<UserOutlined className="text-white" />}>
+          {/* <Item key="2" icon={<UserOutlined className="text-white" />}>
             <Link to="/admin/users">
               <span
                 className={
@@ -55,7 +55,7 @@ const AdminLayout = () => {
                 Users
               </span>
             </Link>
-          </Item>
+          </Item> */}
           <Item key="3" icon={<SettingOutlined className="text-white" />}>
             <Link to="/admin/menu">
               <span
@@ -73,12 +73,20 @@ const AdminLayout = () => {
       {/* Main Layout */}
       <Layout style={{ marginLeft: 200 }}>
         {" "}
-        <Header className="bg-adminOne shadow-sm">
-          <div className="flex justify-between items-center">
-            <h1 className="text-lg font-semibold text-white">Welcome, Admin</h1>
-            <div className=" text-white">Profile</div>{" "}
-          </div>
-        </Header>
+        {/* <Header className="bg-adminOne shadow-sm">
+          <Row justify="space-between" align="middle">
+            <Col>
+              <Title level={4} className="text-white">
+                Welcome, Admin
+              </Title>
+            </Col>
+            <Col>
+              <Button type="primary" className="bg-adminThree text-white">
+                Logout
+              </Button>
+            </Col>
+          </Row>
+        </Header> */}
         <Content className="p-6 bg-primary text-black">
           <div className="p-6 bg-adminFour rounded-lg shadow-sm">
             <Outlet /> {/* This will render the nested routes */}

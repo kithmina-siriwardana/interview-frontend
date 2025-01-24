@@ -2,13 +2,17 @@ import { Table, Space, message, Button } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import AddMenuItemModal from "../../components/Admin/MenuAdd";
+import MenuItemModal from "../../components/Admin/MenuItemModal";
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [itemAdded, setItemAdded] = useState(false);
+  const [mode, setMode] = useState("add");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const token = localStorage.getItem("token");
 
   // Fetch menu items
   useEffect(() => {
@@ -26,7 +30,7 @@ const Menu = () => {
     };
 
     fetchMenuItems();
-  }, []);
+  }, [itemAdded]);
 
   // Display loading state
   if (loading) {
@@ -38,25 +42,28 @@ const Menu = () => {
     message.error("Something went wrong!");
   }
 
-  // Show modal
-  const showModal = () => {
+  // Show modal for adding or editing
+  const showModal = (mode = "add", item = null) => {
+    setMode(mode);
+    setSelectedItem(item);
     setIsModalVisible(true);
   };
 
   // Hide modal
   const handleModalCancel = () => {
     setIsModalVisible(false);
+    setSelectedItem(null);
   };
 
   // Transform menuItems into Data source for the table
-  const dataSource = menuItems.map((item, index) => ({
-    key: (index + 1).toString(),
+  const dataSource = menuItems.map((item) => ({
+    key: item._id,
     name: item.name,
     description: item.description,
     price: `${item.price.toFixed(2)}`,
     category: item.category,
     type: item.type,
-    Status: item.isActive,
+    status: item.isActive,
   }));
 
   // Function to truncate description
@@ -85,9 +92,10 @@ const Menu = () => {
       ),
     },
     {
-      title: "Price (Rs)",
+      title: "Price (LKR)",
       dataIndex: "price",
       key: "price",
+      className: "text-right",
       render: (text) => <span className="text-adminTwo">{text}</span>,
     },
     {
@@ -104,8 +112,8 @@ const Menu = () => {
     },
     {
       title: "Status",
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "status",
+      key: "status",
       render: (text) => (
         <span className={text ? "text-green-700" : "text-red-600"}>
           {text ? "Active" : "Inactive"}
@@ -132,14 +140,30 @@ const Menu = () => {
 
   // Handle Edit Action
   const handleEdit = (key) => {
-    console.log("Edit menu item with key:", key);
-    // Add your edit logic here
+    const itemToEdit = menuItems.find((item) => item._id === key);
+    if (itemToEdit) {
+      showModal("edit", itemToEdit); // Open modal in "edit" mode
+    }
   };
 
   // Handle Delete Action
   const handleDelete = (key) => {
     console.log("Delete menu item with key:", key);
-    // Add your delete logic here
+    axios
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/api/menu/${key}`, {
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      })
+      .then(() => {
+        message.success("Menu item deleted successfully");
+        setItemAdded(!itemAdded);
+      })
+      .catch((err) => {
+        message.error("Failed to delete menu item");
+        console.error(err);
+      });
   };
 
   return (
@@ -150,8 +174,7 @@ const Menu = () => {
         </h1>
         <Button
           className="rounded-md py-5 bg-adminTwo text-white"
-          onClick={showModal}
-          // style={{ hover: { backgroundColor: "var(--adminOne)" } }}
+          onClick={() => showModal("add")} // Open modal in "add" mode
         >
           Add new Item
         </Button>
@@ -159,15 +182,22 @@ const Menu = () => {
       <Table
         dataSource={dataSource}
         columns={columns}
-        pagination={false}
+        pagination={{
+          pageSize: 7,
+          showTotal: (total) => `Total ${total} items`,
+        }}
         bordered
         className="rounded-lg overflow-hidden"
       />
 
-      {/* Add new item modal */}
-      <AddMenuItemModal
+      {/* Add/Edit item modal */}
+      <MenuItemModal
         isModalVisible={isModalVisible}
         handleModalCancel={handleModalCancel}
+        setItemAdded={setItemAdded}
+        itemAdded={itemAdded}
+        mode={mode} // Pass the mode ("add" or "edit")
+        selectedItem={selectedItem} // Pass the item to edit
       />
     </div>
   );

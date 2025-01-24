@@ -8,7 +8,8 @@ const MenuItemCard = ({ item }) => {
   return (
     <Card
       hoverable
-      className="w-72 rounded-lg border  bg-slate-100 text-secondary"
+      className="w-72 rounded-lg border bg-slate-100 text-secondary"
+      style={{ height: "400px" }} // Fixed height for consistency
       cover={
         <img
           alt={name}
@@ -17,13 +18,20 @@ const MenuItemCard = ({ item }) => {
         />
       }
     >
-      {/* Name */}
-      <Title level={4} className="text-secondary font-semibold mb-2">
+      {/* Name - Limited to 2 lines */}
+      <Title
+        level={4}
+        className="text-secondary font-semibold mb-2 line-clamp-2" // Tailwind line-clamp utility
+      >
         {name}
       </Title>
 
-      {/* Description */}
-      <Text className="text-gray-400 text-sm block mb-4">{description}</Text>
+      {/* Description - Limited to 3 lines */}
+      <Text className="text-gray-400 text-sm block mb-4 line-clamp-3">
+        {" "}
+        {/* Tailwind line-clamp utility */}
+        {description}
+      </Text>
 
       {/* Price and Type */}
       <div className="flex justify-between items-center">

@@ -7,7 +7,7 @@ import About from "./pages/user/About";
 import Contact from "./pages/user/Contact";
 import Dashboard from "./pages/admin/Dashboard";
 import UserLayout from "./components/layouts/Userlayout";
-import AdminUser from "./pages/admin/User";
+// import AdminUser from "./pages/admin/User";
 import AdminMenu from "./pages/admin/Menu";
 import AdminLayout from "./components/layouts/Adminlayout";
 // import ProtectedRoute from "./components/auth/protectedRoutes";
@@ -31,7 +31,7 @@ function App() {
         {/* Admin Routes */}
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin/users" element={<AdminUser />} />
+          {/* <Route path="/admin/users" element={<AdminUser />} /> */}
           <Route path="/admin/menu" element={<AdminMenu />} />
         </Route>
       </Routes>
