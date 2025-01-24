@@ -1,31 +1,63 @@
-import { Table, Space } from "antd";
+import { Table, Space, message, Button } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import AddMenuItemModal from "../../components/Admin/MenuAdd";
 
 const Menu = () => {
-  // Sample data for the table
-  const dataSource = [
-    {
-      key: "1",
-      name: "Margherita Pizza",
-      description: "Classic pizza with tomato sauce, mozzarella, and basil.",
-      category: "Pizza",
-      price: "$10.99",
-    },
-    {
-      key: "2",
-      name: "Spaghetti Carbonara",
-      description: "Pasta with eggs, cheese, pancetta, and black pepper.",
-      category: "Pasta",
-      price: "$12.99",
-    },
-    {
-      key: "3",
-      name: "Caesar Salad",
-      description: "Romaine lettuce, croutons, parmesan, and Caesar dressing.",
-      category: "Salad",
-      price: "$8.99",
-    },
-  ];
+  const [menuItems, setMenuItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // Fetch menu items
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/menu`
+        );
+        setMenuItems(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
+
+  // Display loading state
+  if (loading) {
+    return <div>Loading menu items...</div>;
+  }
+
+  // Display error state
+  if (error) {
+    message.error("Something went wrong!");
+  }
+
+  // Show modal
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  // Hide modal
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  // Transform menuItems into Data source for the table
+  const dataSource = menuItems.map((item, index) => ({
+    key: (index + 1).toString(),
+    name: item.name,
+    description: item.description,
+    price: `${item.price.toFixed(2)}`,
+    category: item.category,
+    type: item.type,
+    Status: item.isActive,
+  }));
 
   // Function to truncate description
   const truncateDescription = (text, maxLength = 50) => {
@@ -53,16 +85,32 @@ const Menu = () => {
       ),
     },
     {
+      title: "Price (Rs)",
+      dataIndex: "price",
+      key: "price",
+      render: (text) => <span className="text-adminTwo">{text}</span>,
+    },
+    {
       title: "Category",
       dataIndex: "category",
       key: "category",
       render: (text) => <span className="text-adminTwo">{text}</span>,
     },
     {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
       render: (text) => <span className="text-adminTwo">{text}</span>,
+    },
+    {
+      title: "Status",
+      dataIndex: "Status",
+      key: "Status",
+      render: (text) => (
+        <span className={text ? "text-green-700" : "text-red-600"}>
+          {text ? "Active" : "Inactive"}
+        </span>
+      ),
     },
     {
       title: "Action",
@@ -96,15 +144,30 @@ const Menu = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-adminOne mb-4">
-        Menu Management
-      </h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-semibold text-adminOne mb-4">
+          Menu Management
+        </h1>
+        <Button
+          className="rounded-md py-5 bg-adminTwo text-white"
+          onClick={showModal}
+          // style={{ hover: { backgroundColor: "var(--adminOne)" } }}
+        >
+          Add new Item
+        </Button>
+      </div>
       <Table
         dataSource={dataSource}
         columns={columns}
         pagination={false}
         bordered
         className="rounded-lg overflow-hidden"
+      />
+
+      {/* Add new item modal */}
+      <AddMenuItemModal
+        isModalVisible={isModalVisible}
+        handleModalCancel={handleModalCancel}
       />
     </div>
   );
