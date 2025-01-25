@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Carousel, Button, Typography } from "antd";
+import { Carousel, Button, Typography, Spin } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { sliderImages } from "../../constants/constants";
 import axios from "axios";
@@ -88,6 +88,7 @@ const Home = () => {
             type="primary"
             size="large"
             className="bg-primary text-secondary"
+            onClick={() => (window.location.href = "/menu")}
           >
             Explore Our Menu
           </Button>
@@ -123,7 +124,9 @@ const Home = () => {
 
       {/* Menu Highlights Section */}
       {loading ? (
-        <>Loading...</>
+        <div className="flex justify-center items-center">
+          <Spin size="large" tip="Loading..." />
+        </div>
       ) : menuItems ? (
         <>
           <div className="py-8 px-8 bg-gray-100">

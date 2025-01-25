@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Input, Select, Row, Col, Typography, message } from "antd";
+import { Input, Select, Row, Col, Typography, message, Spin } from "antd";
 import MenuItemCard from "../../components/user/MenuItemCard";
+import MenuItemModal from "../../components/user/MenuItemModal";
 import axios from "axios";
 
 const { Search } = Input;
@@ -14,6 +15,8 @@ const Menu = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedType, setSelectedType] = useState("All");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   // Fetch menu items
   useEffect(() => {
@@ -35,7 +38,11 @@ const Menu = () => {
 
   // Display loading state
   if (loading) {
-    return <div>Loading menu items...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
   }
 
   // Display error state
@@ -53,6 +60,16 @@ const Menu = () => {
     const matchesType = selectedType === "All" || item.type === selectedType;
     return matchesSearch && matchesCategory && matchesType;
   });
+
+  const handleCardClick = (item) => {
+    setSelectedItem(item);
+    setIsModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    setSelectedItem(null);
+  };
 
   return (
     <div className="p-6 min-h-screen">
@@ -113,10 +130,19 @@ const Menu = () => {
             xl={6}
             className="mb-2"
           >
-            <MenuItemCard item={item} />
+            <div onClick={() => handleCardClick(item)}>
+              <MenuItemCard item={item} />
+            </div>
           </Col>
         ))}
       </Row>
+
+      {/* Modal for displaying item details */}
+      <MenuItemModal
+        item={selectedItem}
+        visible={isModalVisible}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
