@@ -1,8 +1,26 @@
-import { Button } from "antd";
+import { Button, Modal } from "antd";
 import { useAuth } from "../auth/AuthContext";
+import { useState } from "react"; // Import useState for managing modal state
 
 export default function HeaderMenu() {
   const { logout, user } = useAuth();
+  const [isModalVisible, setIsModalVisible] = useState(false); // State to control modal visibility
+
+  // Function to show the modal
+  const showLogoutModal = () => {
+    setIsModalVisible(true);
+  };
+
+  // Function to handle logout confirmation
+  const handleLogoutConfirm = () => {
+    logout(); // Call the logout function from your AuthContext
+    setIsModalVisible(false); // Close the modal
+  };
+
+  // Function to handle modal cancellation
+  const handleLogoutCancel = () => {
+    setIsModalVisible(false); // Close the modal
+  };
 
   return (
     <div className="container mx-auto flex justify-between items-center">
@@ -52,16 +70,30 @@ export default function HeaderMenu() {
       </div>
       <div className="flex items-center">
         {user ? (
-          <Button
-            className="logout-button px-4 py-2 rounded-2xl ml-4"
-            onClick={logout}
-          >
-            Logout
-          </Button>
+          <>
+            <Button
+              className="logout-button px-4 py-2 rounded-2xl ml-4"
+              onClick={showLogoutModal} // Show the modal on button click
+            >
+              Logout
+            </Button>
+            {/* Logout Confirmation Modal */}
+            <Modal
+              title="Confirm Logout"
+              visible={isModalVisible} // Control modal visibility
+              onOk={handleLogoutConfirm} // Handle logout confirmation
+              onCancel={handleLogoutCancel} // Handle modal cancellation
+              okText="Logout"
+              cancelText="Cancel"
+              okButtonProps={{ danger: true }}
+            >
+              <p>Are you sure you want to logout?</p>
+            </Modal>
+          </>
         ) : (
           <>
             <Button
-              className="login-button px-4 py-2 rounded-2xl "
+              className="login-button px-4 py-2 rounded-2xl"
               onClick={() => (window.location.href = "/login")}
             >
               Login

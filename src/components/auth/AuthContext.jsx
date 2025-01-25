@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     setUser(null);
-    navigate("/login");
+    navigate("/");
   };
 
   // Check if the user is authenticated
