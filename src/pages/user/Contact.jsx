@@ -74,14 +74,14 @@ const Contact = () => {
               our menu, want to make a reservation, or just want to say hello,
               feel free to reach out.
             </Paragraph>
-            <Paragraph className="text-gray-700 text-base">
+            <Paragraph className="text-gray-700 ">
               <span className="font-semibold">Address:</span> 123, Parakum
               Street, Kurunegala, Sri Lanka
             </Paragraph>
-            <Paragraph className="text-gray-700 text-base">
+            <Paragraph className="text-gray-700 ">
               <span className="font-semibold">Phone:</span> (+94) 767-593-818
             </Paragraph>
-            <Paragraph className="text-gray-700 text-base mb-6">
+            <Paragraph className="text-gray-700  mb-6">
               <span className="font-semibold">Email:</span>{" "}
               kithminasiriwardana13@gmail.com
             </Paragraph>
