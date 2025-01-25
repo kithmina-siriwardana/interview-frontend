@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Spin } from "antd";
 
 // Create the AuthContext
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -43,14 +45,25 @@ export const AuthProvider = ({ children }) => {
     if (token && role) {
       setUser({ token, role });
     }
+    setLoading(false);
   }, []);
 
   // Protect admin routes
   useEffect(() => {
-    if (location.pathname.startsWith("/admin") && !isAdmin()) {
-      navigate("/unauthorized");
+    if (!loading) {
+      if (location.pathname.startsWith("/admin") && !isAdmin()) {
+        navigate("/unauthorized");
+      }
     }
-  }, [location, user]);
+  }, [location, user, loading]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider

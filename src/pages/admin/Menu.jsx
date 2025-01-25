@@ -1,17 +1,22 @@
-import { Table, Space, message, Button } from "antd";
+import { Table, Space, message, Button, Spin } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import MenuItemModal from "../../components/Admin/MenuItemModal";
+import ItemDetailsModal from "../../components/Admin/ItemDetailsModal";
+// import { image } from "@cloudinary/url-gen/qualifiers/source";
+// import create from "@ant-design/icons/lib/components/IconFont";
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
   const [itemAdded, setItemAdded] = useState(false);
   const [mode, setMode] = useState("add");
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedRowItem, setSelectedRowItem] = useState(null);
   const token = localStorage.getItem("token");
 
   // Fetch menu items
@@ -32,9 +37,12 @@ const Menu = () => {
     fetchMenuItems();
   }, [itemAdded]);
 
-  // Display loading state
   if (loading) {
-    return <div>Loading menu items...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
   }
 
   // Display error state
@@ -55,15 +63,24 @@ const Menu = () => {
     setSelectedItem(null);
   };
 
+  // Handle row click
+  const handleRowClick = (record) => {
+    setSelectedRowItem(record);
+    setIsDetailsModalVisible(true);
+  };
+
   // Transform menuItems into Data source for the table
   const dataSource = menuItems.map((item) => ({
     key: item._id,
     name: item.name,
+    image: item.image,
     description: item.description,
     price: `${item.price.toFixed(2)}`,
     category: item.category,
     type: item.type,
     status: item.isActive,
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
   }));
 
   // Function to truncate description
@@ -114,6 +131,7 @@ const Menu = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      fixed: "right",
       render: (text) => (
         <span className={text ? "text-green-700" : "text-red-600"}>
           {text ? "Active" : "Inactive"}
@@ -123,15 +141,22 @@ const Menu = () => {
     {
       title: "Action",
       key: "action",
+      fixed: "right",
       render: (_, record) => (
         <Space size="middle">
           <EditOutlined
             className="text-blue-500 hover:text-blue-700 cursor-pointer"
-            onClick={() => handleEdit(record.key)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEdit(record.key);
+            }}
           />
           <DeleteOutlined
             className="text-red-500 hover:text-red-700 cursor-pointer"
-            onClick={() => handleDelete(record.key)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete(record.key);
+            }}
           />
         </Space>
       ),
@@ -187,6 +212,11 @@ const Menu = () => {
           showTotal: (total) => `Total ${total} items`,
         }}
         bordered
+        scroll={{ x: true }}
+        onRow={(record) => ({
+          className: "cursor-pointer",
+          onClick: () => handleRowClick(record), // Handle row click
+        })}
         className="rounded-lg overflow-hidden"
       />
 
@@ -198,6 +228,13 @@ const Menu = () => {
         itemAdded={itemAdded}
         mode={mode} // Pass the mode ("add" or "edit")
         selectedItem={selectedItem} // Pass the item to edit
+      />
+
+      {/* Item details modal */}
+      <ItemDetailsModal
+        visible={isDetailsModalVisible}
+        onCancel={() => setIsDetailsModalVisible(false)}
+        item={selectedRowItem}
       />
     </div>
   );

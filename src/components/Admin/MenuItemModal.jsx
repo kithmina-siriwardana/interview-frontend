@@ -19,8 +19,8 @@ const MenuItemModal = ({
   handleModalCancel,
   setItemAdded,
   itemAdded,
-  mode, // "add" or "edit"
-  selectedItem, // Item data for "edit" mode
+  mode,
+  selectedItem,
 }) => {
   const token = localStorage.getItem("token");
   const [form] = Form.useForm();
@@ -58,7 +58,6 @@ const MenuItemModal = ({
     try {
       let imageUrl = selectedItem?.image; // Use existing image URL in "edit" mode
 
-      // Upload new image to Cloudinary in "add" mode or if a new image is uploaded in "edit" mode
       if (selectedImageFile && selectedImageFile instanceof File) {
         const cloudinaryFormData = new FormData();
         cloudinaryFormData.append("file", selectedImageFile);
@@ -66,13 +65,14 @@ const MenuItemModal = ({
         cloudinaryFormData.append("folder", "menu_items");
 
         const cloudinaryResponse = await axios.post(
-          "https://api.cloudinary.com/v1_1/dku5y0o8s/image/upload",
+          `https://api.cloudinary.com/v1_1/${
+            import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+          }/image/upload`,
           cloudinaryFormData
         );
         imageUrl = cloudinaryResponse.data.secure_url;
       }
 
-      // Prepare payload with image URL
       const payload = {
         ...values,
         isActive: values.status === "true",

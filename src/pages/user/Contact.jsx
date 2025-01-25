@@ -15,7 +15,7 @@ const Contact = () => {
         <Row gutter={[32, 32]}>
           {/* Contact Form */}
           <Col xs={24} md={12}>
-            <Title level={2} className="text-3xl font-bold mb-6">
+            <Title level={3} className="text-3xl font-bold mb-6">
               Get in Touch
             </Title>
             <Form onFinish={onFinish} layout="vertical">
@@ -66,22 +66,22 @@ const Contact = () => {
 
           {/* Contact Info and Map */}
           <Col xs={24} md={12}>
-            <Title level={2} className="text-3xl font-bold mb-6">
+            <Title level={3} className="text-3xl font-bold mb-6">
               Our Location
             </Title>
-            <Paragraph className="text-gray-700 text-lg mb-6">
+            <Paragraph className="text-gray-700 text-base mb-6">
               We&apos;d love to hear from you! Whether you have a question about
               our menu, want to make a reservation, or just want to say hello,
               feel free to reach out.
             </Paragraph>
-            <Paragraph className="text-gray-700 text-lg">
+            <Paragraph className="text-gray-700 text-base">
               <span className="font-semibold">Address:</span> 123, Parakum
               Street, Kurunegala, Sri Lanka
             </Paragraph>
-            <Paragraph className="text-gray-700 text-lg">
+            <Paragraph className="text-gray-700 text-base">
               <span className="font-semibold">Phone:</span> (+94) 767-593-818
             </Paragraph>
-            <Paragraph className="text-gray-700 text-lg mb-6">
+            <Paragraph className="text-gray-700 text-base mb-6">
               <span className="font-semibold">Email:</span>{" "}
               kithminasiriwardana13@gmail.com
             </Paragraph>

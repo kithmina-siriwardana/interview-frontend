@@ -1,10 +1,40 @@
-import { Card, Row, Col, Typography } from "antd";
+import { Card, Row, Col, Typography, Spin } from "antd";
+import axios from "axios";
+import { useState } from "react";
 
 const { Title, Text } = Typography;
 
 const Dashboard = () => {
-  const totalUsers = 10;
-  const totalMenuItems = 20;
+  const [totalMenuItems, setTotalMenuItems] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useState(() => {
+    // Fetch total menu items
+    const fetchTotalMenuItems = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/menu/get/count`
+        );
+
+        console.log(response.data);
+        setTotalMenuItems(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    };
+    fetchTotalMenuItems();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center">
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Dashboard Title */}
@@ -13,20 +43,23 @@ const Dashboard = () => {
       {/* Cards for Total Users and Total Menu Items */}
       <Row gutter={[16, 16]}>
         {/* Total Users Card */}
-        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+        {/* <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <Card className="rounded-lg shadow-md hover:shadow-lg transition-shadow">
             <Text className="text-gray-600 text-lg">Total Users</Text>
             <Title level={3} className="text-adminOne mt-2">
               {totalUsers}
             </Title>
           </Card>
-        </Col>
+        </Col> */}
 
         {/* Total Menu Items Card */}
-        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-          <Card className="rounded-lg shadow-md hover:shadow-lg transition-shadow">
+        <Col xs={24} sm={12} md={12} lg={8} xl={6}>
+          <Card className="rounded-lg shadow-md hover:shadow-lg transition-shadow flex items-center justify-center">
             <Text className="text-gray-600 text-lg">Total Menu Items</Text>
-            <Title level={3} className="text-adminOne mt-2">
+            <Title
+              level={3}
+              className="text-adminOne flex items-center justify-center"
+            >
               {totalMenuItems}
             </Title>
           </Card>
