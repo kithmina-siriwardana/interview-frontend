@@ -16,6 +16,7 @@ import AdminMenu from "./pages/admin/Menu";
 import AdminLayout from "./components/layouts/Adminlayout";
 import { AuthProvider, useAuth } from "./components/auth/AuthContext";
 import UnauthorizedPage from "./pages/common/UnauthorizedPage";
+import NotFound from "./pages/common/NotFound";
 
 export const PrivateRoute = ({ children, requiredRole }) => {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -47,6 +48,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
 
           {/* Admin Routes */}

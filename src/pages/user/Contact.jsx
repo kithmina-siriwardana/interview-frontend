@@ -5,7 +5,6 @@ const { Title, Paragraph } = Typography;
 const Contact = () => {
   const onFinish = (values) => {
     console.log("Received values:", values);
-    // Add your form submission logic here
   };
 
   return (

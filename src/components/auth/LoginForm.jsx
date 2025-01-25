@@ -27,17 +27,6 @@ const LoginForm = () => {
         message.success("Login successful!");
         login(token, role);
       }
-
-      // Save the token and role in localStorage or sessionStorage
-      // localStorage.setItem("token", token);
-
-      // Show success message
-      // message.success("Login successful!");
-
-      // Redirect to the dashboard
-      // if (token) {
-      //   window.location.href = "/admin";
-      // }
     } catch (error) {
       // Handle login error
       console.error("Login failed:", error);

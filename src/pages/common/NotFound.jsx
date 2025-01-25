@@ -7,9 +7,9 @@ const UnauthorizedPage = () => {
   return (
     <div className="flex justify-center items-center bg-primary ">
       <Result
-        status="403"
-        title="403 - Unauthorized"
-        subTitle="Sorry, you are not authorized to access this page."
+        status="404"
+        title="404 - Not Found"
+        subTitle="Sorry, the page you visited does not exist."
         extra={
           <Button
             className="login-form-button py-4"

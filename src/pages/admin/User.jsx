@@ -32,7 +32,7 @@ const User = () => {
       key: "name",
       render: (text) => (
         <span className="text-adminTwo font-medium">{text}</span>
-      ), // Use adminOne color for text
+      ),
     },
     {
       title: "Email",
@@ -67,13 +67,11 @@ const User = () => {
   // Handle Edit Action
   const handleEdit = (key) => {
     console.log("Edit user with key:", key);
-    // Add your edit logic here
   };
 
   // Handle Delete Action
   const handleDelete = (key) => {
     console.log("Delete user with key:", key);
-    // Add your delete logic here
   };
 
   return (
