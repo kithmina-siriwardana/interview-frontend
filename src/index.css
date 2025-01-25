@@ -10,3 +10,81 @@ body,
   margin: 0;
   padding: 0;
 }
+
+.custom-button-white {
+  background-color: white !important;
+  color: black !important;
+}
+
+.custom-button-white:hover {
+  background-color: black !important;
+  color: white !important;
+}
+
+.login-button {
+  background-color: transparent !important;
+  color: white !important;
+  border: 1px solid white !important;
+}
+
+.login-button:hover {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid white !important;
+}
+
+.logout-button {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid black !important;
+}
+
+.logout-button:hover {
+  background-color: black !important;
+  color: white !important;
+  border: 1px solid white !important;
+}
+
+.icon-admin {
+  color: white !important;
+}
+
+.icon-admin-selected {
+  color: black !important;
+}
+
+.admin-logout-button {
+  background-color: #9db2bf !important;
+  color: black !important;
+  border: 1px solid #9db2bf !important;
+}
+
+.admin-logout-button:hover {
+  background-color: #c0392b !important;
+  color: white !important;
+  border: 1px solid #c0392b !important;
+}
+
+.admin-button {
+  background-color: #526d82 !important;
+  color: white !important;
+  border: 1px solid#526D82 !important;
+}
+
+.admin-button:hover {
+  background-color: #27374d !important;
+  color: white !important;
+  border: 1px solid#27374D !important;
+}
+
+.login-form-button {
+  background-color: black !important;
+  color: white !important;
+  border: 1px solid black !important;
+}
+
+.login-form-button:hover {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid black !important;
+}

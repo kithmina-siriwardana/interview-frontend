@@ -255,7 +255,7 @@ const MenuItemModal = ({
           <Button
             type="primary"
             htmlType="submit"
-            className="rounded-md bg-adminTwo text-white"
+            className="rounded-md admin-button"
             loading={isSubmitting}
             disabled={isSubmitting}
           >

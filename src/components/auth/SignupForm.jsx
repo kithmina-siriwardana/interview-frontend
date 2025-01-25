@@ -58,7 +58,7 @@ const SignupForm = () => {
         {/* Signup Button */}
         <button
           type="submit"
-          className="w-full bg-secondary text-white py-2 px-4 rounded-lg font-semibold hover:bg-gray-800 transition duration-300"
+          className="w-full login-form-button py-2 px-4 rounded-lg font-semibold"
         >
           Sign Up
         </button>

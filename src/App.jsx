@@ -5,7 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import LoginPage from "./pages/common/LoginPage";
-// import SignupPage from "./pages/common/SignupPage";
+import SignupPage from "./pages/common/SignupPage";
 import Home from "./pages/user/Home";
 import Menu from "./pages/user/Menu";
 import About from "./pages/user/About";
@@ -45,7 +45,7 @@ function App() {
 
             {/* Common Routes */}
             <Route path="/login" element={<LoginPage />} />
-            {/* <Route path="/signup" element={<SignupPage />} /> */}
+            <Route path="/signup" element={<SignupPage />} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
           </Route>
 

@@ -213,7 +213,7 @@ const Menu = () => {
           Menu Management
         </h1>
         <Button
-          className="rounded-md py-5 bg-adminTwo text-white"
+          className="rounded-md py-5 admin-button"
           onClick={() => showModal("add")} // Open modal in "add" mode
         >
           Add new Item

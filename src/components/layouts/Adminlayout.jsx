@@ -1,9 +1,9 @@
-import { Button, Layout, Menu } from "antd";
+import { useState } from "react";
+import { Button, Layout, Menu, Modal } from "antd";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   DashboardOutlined,
   LogoutOutlined,
-  // UserOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "../auth/AuthContext";
@@ -14,6 +14,7 @@ const { Sider, Content, Footer } = Layout;
 const AdminLayout = () => {
   const { logout } = useAuth();
   const location = useLocation();
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
 
   const selectedKey = location.pathname.startsWith("/admin/users")
     ? "2"
@@ -21,15 +22,25 @@ const AdminLayout = () => {
     ? "3"
     : "1";
 
+  // Handle logout confirmation
+  const handleLogoutConfirm = () => {
+    logout();
+    setIsLogoutModalVisible(false);
+  };
+
+  // Handle logout cancellation
+  const handleLogoutCancel = () => {
+    setIsLogoutModalVisible(false);
+  };
+
   return (
-    <Layout className="min-h-screen ">
+    <Layout className="min-h-screen">
       {/* Sidebar */}
       <Sider
-        // breakpoint="md"
         collapsedWidth="0"
         className="overflow-auto h-screen fixed left-0 bg-adminOne text-white"
       >
-        <div className="p-4 text-center font-semibold text-2xl mt-1 ">
+        <div className="p-4 text-center font-semibold text-2xl mt-1">
           Admin Panel
         </div>
         <Menu
@@ -37,7 +48,16 @@ const AdminLayout = () => {
           mode="inline"
           selectedKeys={[selectedKey]}
         >
-          <Item key="1" icon={<DashboardOutlined className="text-white" />}>
+          <Item
+            key="1"
+            icon={
+              <DashboardOutlined
+                className={
+                  selectedKey === "1" ? "icon-admin-selected" : "icon-admin"
+                }
+              />
+            }
+          >
             <Link to="/admin">
               <span
                 className={
@@ -48,18 +68,16 @@ const AdminLayout = () => {
               </span>
             </Link>
           </Item>
-          {/* <Item key="2" icon={<UserOutlined className="text-white" />}>
-            <Link to="/admin/users">
-              <span
+          <Item
+            key="3"
+            icon={
+              <SettingOutlined
                 className={
-                  selectedKey === "2" ? "text-black font-medium" : "text-white"
+                  selectedKey === "3" ? "icon-admin-selected" : "icon-admin"
                 }
-              >
-                Users
-              </span>
-            </Link>
-          </Item> */}
-          <Item key="3" icon={<SettingOutlined className="text-white" />}>
+              />
+            }
+          >
             <Link to="/admin/menu">
               <span
                 className={
@@ -75,8 +93,8 @@ const AdminLayout = () => {
         {/* Logout Button */}
         <div className="absolute bottom-0 left-0 w-full p-4 flex items-center justify-center mb-20">
           <Button
-            onClick={logout}
-            className="flex items-center justify-center space-x-2 py-2 px-6 bg-adminThree border-adminThree text-white rounded-lg hover:bg-red-700 transition duration-300"
+            onClick={() => setIsLogoutModalVisible(true)}
+            className="flex items-center justify-center space-x-2 py-2 px-6 admin-logout-button font-semibold rounded-lg"
           >
             <LogoutOutlined />
             <span>Logout</span>
@@ -86,21 +104,6 @@ const AdminLayout = () => {
 
       {/* Main Layout */}
       <Layout style={{ marginLeft: 200 }}>
-        {" "}
-        {/* <Header className="bg-adminOne shadow-sm">
-          <Row justify="space-between" align="middle">
-            <Col>
-              <Title level={4} className="text-white">
-                Welcome, Admin
-              </Title>
-            </Col>
-            <Col>
-              <Button type="primary" className="bg-adminThree text-white">
-                Logout
-              </Button>
-            </Col>
-          </Row>
-        </Header> */}
         <Content className="p-6 bg-primary text-black">
           <div className="p-6 bg-adminFour rounded-lg shadow-sm">
             <Outlet /> {/* This will render the nested routes */}
@@ -110,6 +113,19 @@ const AdminLayout = () => {
           Crave Cafe © {new Date().getFullYear()} Alright Reserved
         </Footer>
       </Layout>
+
+      {/* Logout Confirmation Modal */}
+      <Modal
+        title="Confirm Logout"
+        visible={isLogoutModalVisible}
+        onOk={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+        okText="Logout"
+        cancelText="Cancel"
+        okButtonProps={{ danger: true }}
+      >
+        <p>Are you sure you want to logout?</p>
+      </Modal>
     </Layout>
   );
 };

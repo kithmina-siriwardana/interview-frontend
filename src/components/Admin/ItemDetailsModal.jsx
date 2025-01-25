@@ -16,13 +16,6 @@ const ItemDetailsModal = ({ visible, onCancel, item }) => {
     >
       <div className="flex flex-col space-y-4">
         <div className="flex justify-center">
-          {/* <img
-            alt={item.name}
-            src={item.image || "https://i.sstatic.net/y9DpT.jpg"}
-            className="rounded-lg"
-            width={200}
-            height={200}
-          /> */}
           <Image
             src={item.image}
             alt={item.name}

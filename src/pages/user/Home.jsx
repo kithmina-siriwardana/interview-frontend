@@ -87,7 +87,7 @@ const Home = () => {
           <Button
             type="primary"
             size="large"
-            className="bg-primary text-secondary"
+            className="custom-button-white"
             onClick={() => (window.location.href = "/menu")}
           >
             Explore Our Menu
